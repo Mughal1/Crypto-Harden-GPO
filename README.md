@@ -26,6 +26,8 @@ The base script should be tested/used at minimum, followed by at least one of th
 Procedures:
 
 -) Download the relevant scripts
+
 -) Review them
+
 -) Edit the variables within the scripts to set the (GPO) Name, Domain and Server 
 
