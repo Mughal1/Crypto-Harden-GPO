@@ -30,7 +30,7 @@ New-GPO -Name $PolicyName -Comment "GPO to set cipher suite order for Windows se
 ## Remove the newly created GPO if there was a mistake made (uncomment and run separately)
 # Remove-GPO -Name $PolicyName -Domain $Domain -Server $Server
 
-# Set the registry value for the older Windows server cipher suites
+# Set the registry value for the middle aged Windows system cipher suites
 
 $params = @{
     Name      = $PolicyName
