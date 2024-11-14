@@ -37,5 +37,5 @@ Procedures:
 
 -) Link the GPO to a test environment.  Test, test again and when you think you're done testing, test one more time.  This change *can* break things if you haven't prepared.
 
--) Move on to other environments when you feel safe/comfortable enough to do so.
+-) Move on to other environments if/when you feel safe/comfortable enough to do so.
 
