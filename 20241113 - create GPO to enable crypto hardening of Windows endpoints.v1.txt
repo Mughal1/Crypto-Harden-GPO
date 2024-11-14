@@ -1,0 +1,728 @@
+#
+# Use Powershell commands to create a new GPO that contains Windows endpoint crypto hardening registry values
+#
+# Reference: https://learn.microsoft.com/en-us/powershell/module/grouppolicy/?view=windowsserver2022-ps
+# Reference: https://www.hass.de/content/setup-microsoft-windows-or-iis-ssl-perfect-forward-secrecy-and-tls-12
+#
+# Comment: wrote this based on the 4.0.1 version of the www.hass.de script
+#
+
+# 
+# Expected use/outcome: The script is intended to create a new GPO within a specified target AD domain.  The new GPO should have the requisite crypto hardening parmeters to satisfy strong crypto requirements, such as to meet the crypto expectations from a vuln scan or the eyes of a potential auditor :)
+#
+
+#
+# Comment: This script *must* be tested in a non-prod environment before attempting to use this in production.
+#
+
+#
+# The author of this script assumes no liability from any negative consequences from the reading/processing/copying/use/implementation/running of this script or any modified variants of it
+#
+
+# Set variables used throughout the rest of the script
+$PolicyName = "<fill in>"
+$Domain = "<fill in>"
+$Server = "<fill in>" #domain controller
+
+## Modify variables above and then run the following command accordingly to create the GPO based on the correct AD target environment (domain/server)
+New-GPO -Name $PolicyName -Comment "GPO to harden the crypto functions for in-scope target Windows endpoints" -Domain $Domain -Server $Server
+
+## Remove the newly created GPO if there was a mistake made (uncomment and run separately)
+# Remove-GPO -Name $PolicyName -Domain $Domain -Server $Server
+
+## Start adding the hardening registry values to the newly created GPO
+
+## Disable Multi-Protocol Unified Hello
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\Multi-Protocol Unified Hello\Server'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\Multi-Protocol Unified Hello\Server'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\Multi-Protocol Unified Hello\Client'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\Multi-Protocol Unified Hello\Client'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Disable PCT 1.0
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\PCT 1.0\Server'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\PCT 1.0\Server'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\PCT 1.0\Client'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\PCT 1.0\Client'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Disable SSL 2.0 (PCI Compliance)
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Client'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Client'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Disable SSL 3.0 (PCI Compliance) and enable "Poodle" protection
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Disable TLS 1.0 for client and server SCHANNEL communications
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Add and Disable TLS 1.1 for client and server SCHANNEL communications
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client'
+    ValueName = 'DisabledByDefault'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Add and Enable TLS 1.2 for client and server SCHANNEL communications
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server'
+    ValueName = 'Enabled'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server'
+    ValueName = 'DisabledByDefault'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
+    ValueName = 'Enabled'
+    Value     = 1
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
+    ValueName = 'DisabledByDefault'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# The hass.de script indicates that TLS 1.3 related code is causing issues with various Windows endpoints, so we disable/delete the key by default
+# The below command doesn't seem to "store" the disable/delete of the TLS 1.3 key in the policy
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Disable   = $true
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.3'
+}
+
+Set-GPRegistryValue @params
+
+# If you have high confidence that TLS 1.3 does in fact work within your org, comment out the above disable and uncomment the below stanzas covering TLS 1.3 content
+
+#$params = @{
+#    Name      = $PolicyName
+#    Domain    = $Domain
+#    Server    = $Server
+#    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.3\Server'
+#    ValueName = 'Enabled'
+#    Value     = 1
+#    Type      = 'DWORD'
+#}
+
+#Set-GPRegistryValue @params
+
+#$params = @{
+#    Name      = $PolicyName
+#    Domain    = $Domain
+#    Server    = $Server
+#    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.3\Server'
+#    ValueName = 'DisabledByDefault'
+#    Value     = 0
+#    Type      = 'DWORD'
+#}
+
+#Set-GPRegistryValue @params
+
+#$params = @{
+#    Name      = $PolicyName
+#    Domain    = $Domain
+#    Server    = $Server
+#    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.3\Client'
+#    ValueName = 'Enabled'
+#    Value     = 1
+#    Type      = 'DWORD'
+#}
+
+#Set-GPRegistryValue @params
+
+#$params = @{
+#    Name      = $PolicyName
+#    Domain    = $Domain
+#    Server    = $Server
+#    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.3\Client'
+#    ValueName = 'DisabledByDefault'
+#    Value     = 0
+#    Type      = 'DWORD'
+#}
+
+#Set-GPRegistryValue @params
+
+# Disable insecure/weak ciphers.
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\DES 56/56'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\NULL'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC2 128/128'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC2 40/128'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC2 56/128'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 40/128'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 56/128'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 64/128'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 128/128'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\Triple DES 168'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Enable new secure ciphers.
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\AES 128/128'
+    ValueName = 'Enabled'
+    Value     = 0xffffffff
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\AES 256/256'
+    ValueName = 'Enabled'
+    Value     = 0xffffffff
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Set hashes configuration.
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\MD5'
+    ValueName = 'Enabled'
+    Value     = 0
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\SHA'
+    ValueName = 'Enabled'
+    Value     = 0xffffffff
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\SHA256'
+    ValueName = 'Enabled'
+    Value     = 0xffffffff
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\SHA384'
+    ValueName = 'Enabled'
+    Value     = 0xffffffff
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\SHA512'
+    ValueName = 'Enabled'
+    Value     = 0xffffffff
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Set KeyExchangeAlgorithms configuration.
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\KeyExchangeAlgorithms\Diffie-Hellman'
+    ValueName = 'Enabled'
+    Value     = 0xffffffff
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\KeyExchangeAlgorithms\ECDH'
+    ValueName = 'Enabled'
+    Value     = 0xffffffff
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\KeyExchangeAlgorithms\PKCS'
+    ValueName = 'Enabled'
+    Value     = 0xffffffff
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# Microsoft Security Advisory 3174644 - Updated Support for Diffie-Hellman Key Exchange
+# https://docs.microsoft.com/en-us/security-updates/SecurityAdvisories/2016/3174644
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms\Diffie-Hellman'
+    ValueName = 'ServerMinKeyBitLength'
+    Value     = 2048
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms\Diffie-Hellman'
+    ValueName = 'ClientMinKeyBitLength'
+    Value     = 2048
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
+
+# https://support.microsoft.com/en-us/help/3174644/microsoft-security-advisory-updated-support-for-diffie-hellman-key-exc
+
+$params = @{
+    Name      = $PolicyName
+    Domain    = $Domain
+    Server    = $Server
+    Key       = 'HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms\PKCS'
+    ValueName = 'ClientMinKeyBitLength'
+    Value     = 2048
+    Type      = 'DWORD'
+}
+
+Set-GPRegistryValue @params
