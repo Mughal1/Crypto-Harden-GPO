@@ -19,7 +19,7 @@ There are four scripts in this collection:
 
 --) One that targets newer systems (Windows 11, Windows 2022 or higher)
 
-The base script should be tested/used at minimum, followed by at least one of the cipher-order scheme scripts, depending on the machines in scope within your organization.
+The base script should be tested/used at minimum, followed by at least one of the cipher-order scheme scripts, depending on the target machines in scope within your organization.
 
 ---
 
