@@ -11,9 +11,9 @@ There are four scripts in this collection:
 
 -) A base script that is used to set the main crypto settings (enabling/disabling various cryptographic functions) - this is intended to apply to all reasonably possible targets
 -) Three cipher-order scheme scripts, each targeted to a subset of Windows system types, based on age groupings
-    -) One that targets older systems (Windows Server 2008, 2008R2, 2012, 2012R2)
-    -) One that targets middle-aged systems (Windows 10, Windows Server 2016, 2019)
-    -) One that targets newer systems (Windows 11, Windows 2022 or higher)
+--) One that targets older systems (Windows Server 2008, 2008R2, 2012, 2012R2)
+--) One that targets middle-aged systems (Windows 10, Windows Server 2016, 2019)
+--) One that targets newer systems (Windows 11, Windows 2022 or higher)
 
 The base script should be tested/used at minimum, followed by at least one of the cipher-order scheme scripts, depending on the machines in scope within your organization.
 
