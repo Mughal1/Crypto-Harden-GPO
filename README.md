@@ -29,5 +29,13 @@ Procedures:
 
 -) Review them
 
--) Edit the variables within the scripts to set the (GPO) Name, Domain and Server 
+-) Edit the variables within the scripts to set the (GPO) Policy Name, Domain and Server.  Save your changes
+
+-) Use/Run the relevant/updated scripts to create the new named GPO's within your targeted domain
+
+-) Review the newly created GPO objects and ensure that they look "clean"
+
+-) Link the GPO to a test environment.  Test, test again and when you think you're done testing, test one more time.  This change *can* break things if you haven't prepared.
+
+-) Move on to other environments when you feel safe/comfortable enough to do so.
 
