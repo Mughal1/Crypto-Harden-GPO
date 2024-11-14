@@ -10,7 +10,8 @@ That hass.de script seems intended for use on single/individual servers - wanted
 There are four scripts in this collection:
 
 -) A base script that is used to set the main crypto settings (enabling/disabling various cryptographic functions) - this is intended to apply to all reasonably possible targets
--) Three cipher-order scheme scripts, each targeted to a subset of Windows system types, based on age groupings
+-) Three cipher-order scheme scripts, each targeted to a subset of Windows system types, based on OS-age groupings
+
 --) One that targets older systems (Windows Server 2008, 2008R2, 2012, 2012R2)
 --) One that targets middle-aged systems (Windows 10, Windows Server 2016, 2019)
 --) One that targets newer systems (Windows 11, Windows 2022 or higher)
