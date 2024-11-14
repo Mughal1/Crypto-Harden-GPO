@@ -1,5 +1,5 @@
 #
-# Create a GPO for setting the cipher suites order for targeting to middle-aged Windows machines (Win10/2016/2019)
+# Use Powershell commands to create a GPO for setting the cipher suites order for targeting to middle-aged Windows machines (Win10/2016/2019)
 #
 # Reference: https://learn.microsoft.com/en-us/powershell/module/grouppolicy/?view=windowsserver2022-ps
 # Reference: https://www.hass.de/content/setup-microsoft-windows-or-iis-ssl-perfect-forward-secrecy-and-tls-12
