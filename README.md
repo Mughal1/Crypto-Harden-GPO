@@ -9,9 +9,9 @@ That hass.de script seems intended for use on single/individual systems - wanted
 
 There are four scripts in this collection:
 
--) A base script that is used to set the main crypto settings (enabling/disabling various cryptographic functions) - this is intended to apply to all reasonably possible targets
+create-gpo-harden-win-crypto.txt - A base script that is used to set the main crypto settings (enabling/disabling various cryptographic functions) - this is intended to apply to all reasonably possible targets
 
--) Three cipher-order scheme scripts, each targeted to a subset of Windows system types, based on OS-age groupings
+Three cipher-order scheme scripts, each targeted to a subset of Windows system types, based on OS-age groupings:
 
 --) One that targets older systems (Windows Server 2008, 2008R2, 2012, 2012R2)
 
