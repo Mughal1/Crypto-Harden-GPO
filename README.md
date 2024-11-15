@@ -17,7 +17,7 @@ Three cipher-order scheme scripts, each targeted to a subset of Windows system t
 
 --) One that targets middle-aged systems (Windows 10, Windows Server 2016, 2019)
 
---) One that targets newer systems (Windows 11, Windows 2022 or higher)
+create-GPO-cipher-suite-order_Win11-2022.txt - Intended to target newer systems (Windows 11, Windows 2022 or higher)
 
 The base script should be tested/used at minimum, followed by at least one of the cipher-order scheme scripts, depending on the target machines in scope within your organization.
 
