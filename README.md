@@ -11,15 +11,13 @@ There are four scripts in this collection:
 
 create-gpo-harden-win-crypto.txt - A base script that is used to set the main crypto settings (enabling/disabling various cryptographic functions) - this is intended to apply to all reasonably possible targets
 
-Three cipher-order scheme scripts, each targeted to a subset of Windows system types, based on OS-age groupings:
-
 create-GPO-cipher-suite-order_2008-2008R2-2012-2012R2.txt - Intended to target older systems (Windows Server 2008, 2008R2, 2012, 2012R2)
 
 create-GPO-cipher-suite-order_Win10-2016-2019.v1.txt - Intended to target middle-aged systems (Windows 10, Windows Server 2016, 2019)
 
 create-GPO-cipher-suite-order_Win11-2022.txt - Intended to target newer systems (Windows 11, Windows 2022 or higher)
 
-The base script should be tested/used at minimum, followed by at least one of the cipher-order scheme scripts, depending on the target machines in scope within your organization.
+The base script should be tested/used at minimum, followed by at least one of the cipher-order scheme scripts depending on the types of target machines in scope within your organization.
 
 ---
 
